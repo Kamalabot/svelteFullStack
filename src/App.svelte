@@ -23,7 +23,8 @@
   </p>
 
   <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
+    What you are seeing above is imported from a different file and just rendered 
+    here. Click on the Vite and Svelte logos to get ahead
   </p>
 </main>
 
