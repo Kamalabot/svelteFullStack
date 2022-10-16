@@ -3,21 +3,52 @@
   import Counter from './lib/Counter.svelte'
   import Nested from './lib/Nested.svelte';
   import Info from './lib/info.svelte' //So even if the file name has smaller letters, the imported class matters
-  let numbers = [1, 2, 3, 4];
+  import Thing from './lib/Thing.svelte'
+  import Awaiting from './lib/Awaiting.svelte'
 
+  let numbers = [1, 2, 3, 4];
+  
   function addNumber() {
     numbers.push(numbers.length + 1);
     numbers = numbers
   }
 
   $: sum = numbers.reduce((t, n) => t + n, 0);
-
+  $: x = numbers.length
   const pkg = {
 		name: 'svelte',
 		version: 3,
 		speed: 'blazing',
 		website: 'https://svelte.dev'
 	};
+  let user = {loggedIn : false};
+  let userStatus;
+
+  function toggle(){
+    user.loggedIn = !user.loggedIn;
+    if (user.loggedIn){
+    userStatus = `He has logged In`
+    } else {
+      userStatus = `He has logged Out`
+    }
+  }
+
+  let things = [
+		{ id: 1, name: 'apple' },
+		{ id: 2, name: 'banana' },
+		{ id: 3, name: 'carrot' },
+		{ id: 4, name: 'doughnut' },
+		{ id: 5, name: 'egg' },
+	];
+
+  function handleClick() {
+		things = things.slice(1);
+	}
+
+  function lastClick() {
+		things.pop()
+    things = things
+	}
 
 </script>
 
@@ -30,6 +61,8 @@
       <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
     </a>
   </div>
+
+  <Awaiting/>
   <h1>Vite + Svelte</h1>
 
   <div class="card">
@@ -47,7 +80,32 @@
     here. Click on the Vite and Svelte logos to get ahead
   </p>
 
+  {#if user.loggedIn} //#Logic beginner 
+	<button on:click={toggle}>
+		Log out
+	</button>
+  {:else} //: is the continuation marker
+    <button on:click={toggle}>
+      Log in
+    </button>
+  {/if}
+  <p>Is the user logged in? {userStatus}</p>
+
   <p>{numbers.join(' + ')} = {sum}</p>
+
+  {#if x < 5}
+    <p> Elements are increasing in size and length</p>
+  {:else if x < 10}
+    <p> Hey stop clicking that button... will ya?</p>
+  {:else if x < 15}
+    <p>Thats it the world ends in 3 days...</p>
+  {:else}
+    <p>Thats it the world ends</p>
+  {/if}
+
+  {#each numbers as num }
+    <li>This is the {num} number</li>
+  {/each}
 
   <button on:click={addNumber}>
     Add a number
@@ -56,6 +114,18 @@
   <p>
    <strong> A simple rule of thumb:</strong> the updated variable must directly appear on the left hand side of the assignment.
   </p>
+  
+  {#each things as thing(thing.id)} // You can use any object as the key, as Svelte uses a Map internally — in other words you could do (thing) instead of (thing.id). Using a string or number is generally safer,
+	  <Thing name={thing.name}/>
+  {/each}
+
+  <button on:click={handleClick}>
+    Remove first thing
+  </button>
+
+  <button on:click={lastClick}>
+    Remove last thing
+  </button>
 
   <p>Making new components.</p>
   <Nested/>
