@@ -49,10 +49,44 @@
 		things.pop()
     things = things
 	}
+  let m = { x: 0, y: 0 };
 
+  function handleMousemove(event) {
+    m.x = event.clientX;
+    m.y = event.clientY;
+  }
+
+  import Inner from './lib/Inner.svelte';
+
+  function handleMessage(event) {
+    alert(event.detail.text);
+  }
+
+  import Outer from './lib/Outer.svelte';
+
+  function handleNewMessage(event) {
+    alert(event.detail.text);
+  }
+
+  import CustomButton from './lib/CustomButton.svelte';
+
+  function handleCustomClick() {
+    alert('Button Clicked in the Main Page...');
+  }
+
+  function newClick() {
+    alert('Reusing the button for New Click...');
+  }
 </script>
 
 <main>
+  <CustomButton buttonName={'clickety Clik'} on:click={handleCustomClick}/>
+
+  <CustomButton buttonName={'newAdded'} on:click={newClick}/>
+
+  <Outer on:message={handleNewMessage}/>
+
+  <Inner on:message={handleMessage}/>
   <div>
     <a href="https://vitejs.dev" target="_blank"> 
       <img src="/vite.svg" class="logo" alt="Vite Logo" />
@@ -63,6 +97,11 @@
   </div>
 
   <Awaiting/>
+
+  <div on:mousemove={handleMousemove}>
+    The mouse position is {m.x} , {m.y}
+  </div>
+
   <h1>Vite + Svelte</h1>
 
   <div class="card">
