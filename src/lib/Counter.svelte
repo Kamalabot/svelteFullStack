@@ -18,6 +18,6 @@
 
   <p class="w-50 mr2 bg-gold tc"> 
     Para in the left side has been rendered by using the tachyons Css imported at the 
-    top
+    top. The app is continuously updating
   </p>
 </div>
